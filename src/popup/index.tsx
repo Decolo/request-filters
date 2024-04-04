@@ -27,6 +27,7 @@ import {
   type ColumnDef
 } from "@tanstack/react-table"
 import { useDebounce } from "ahooks"
+import { useStorage } from "@plasmohq/storage/hook"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -58,23 +59,10 @@ export const columns: ColumnDef<UrlInfo>[] = [
 
 function IndexPopup() {
   const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([])
-  const [input, setInput] = useState("")
+  const [input, setInput] = useStorage("input", "events")
   const debouncedInput = useDebounce(input, { wait: 400 })
 
-  useEffect(() => {
-    chrome.storage.local.get("cacheInputUrl").then((data) => {
-      console.log('** log data **', data)
-      debugger
-      setInput(data["cacheInputUrl"])
-    })
-  }, [])
-
-  useEffect(() => {
-    chrome.storage.local.set({ key: debouncedInput }, () => {
-      console.log('** log debouncedInput **', debouncedInput)
-    
-    })
-  }, [debouncedInput])
+  console.log('** log input **', input)
 
   const filteredUrlInfos = useMemo(() => {
     if (!debouncedInput) {
@@ -92,13 +80,16 @@ function IndexPopup() {
 
   useEffect(() => {
     const handler = (details: chrome.webRequest.WebRequestBodyDetails) => {
-      
       let urlInfo = {
         url: details.url,
         method: details.method
       }
 
-      if (details.method === "POST" || details.method === "PUT" && details?.requestBody?.raw?.[0]?.bytes.byteLength) {
+      if (
+        details.method === "POST" ||
+        (details.method === "PUT" &&
+          details?.requestBody?.raw?.[0]?.bytes.byteLength)
+      ) {
         const bodyString = parsedBody(details.requestBody.raw[0].bytes)
 
         urlInfo["body"] = bodyString
@@ -127,7 +118,7 @@ function IndexPopup() {
         <CardDescription>All url list below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Input placeholder="input" onChange={(e) => setInput(e.target.value)} />
+        <Input placeholder="input" value={input} onChange={(e) => setInput(e.target.value)} />
 
         <Table>
           <TableHeader>
@@ -175,14 +166,14 @@ function IndexPopup() {
         </Table>
       </CardContent>
 
-      <CardHeader>
+      {/* <CardHeader>
         <CardTitle>Amplitude</CardTitle>
       </CardHeader>
       <CardContent>
         <iframe
           src="https://app.amplitude.com/analytics/jobright/home"
           width={"100%"}></iframe>
-      </CardContent>
+      </CardContent> */}
     </Card>
   )
 }
