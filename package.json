@@ -1,8 +1,8 @@
 {
-  "name": "event-extension",
-  "displayName": "Event extension",
+  "name": "request-displayer",
+  "displayName": "Request displayer",
   "version": "0.0.1",
-  "description": "easy to test the event",
+  "description": "easy to show url, method, body of request",
   "author": "caicheng.fe.dev@gmail.com",
   "scripts": {
     "dev": "plasmo dev",
