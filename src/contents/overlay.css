@@ -1,13 +1,25 @@
 .button-wrapper {
+    padding: 4px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.img-container {
+    background-image: url("https://p.sda1.dev/16/c96e905a80c2a2ded6f334c5d8bbe303/settings.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     width: 32px;
     height: 32px;
-    border-radius: 8px;
-    border: 1px solid red;
 }
 
 #plasmo-shadow-container {
+    background-color: #fff;
     position: fixed !important;
-    right: 32px !important;
+    right: 40px !important;
     top: 50% !important;
+    width: fit-content;
+    height: fit-content;
     transform: translateX(-50%);
 }

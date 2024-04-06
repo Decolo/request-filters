@@ -18,7 +18,7 @@ import { cn, parsedBody } from "~/lib/utils"
 
 import "~/global.css"
 
-import { useDebounce } from "ahooks"
+import { useDebounce, useUpdateEffect } from "ahooks"
 import Highlighter from "react-highlight-words"
 
 import { useStorage } from "@plasmohq/storage/hook"
@@ -33,10 +33,22 @@ export type UrlInfo = {
 
 function IndexPopup() {
   const [urlInfos, setUrlInfos] = useState<UrlInfo[]>([])
-  const [urlInput, setUrlInput] = useStorage("url-input", "events")
-  const [bodyInput, setBodyInput] = useStorage("body-input", "")
+  const [storageUrlInput, setStorageUrlInput] = useStorage("url-input", "events")
+  const [urlInput, setUrlInput] = useState(storageUrlInput)
+  
+  const [storageBodyInput, setStorageBodyInput] = useStorage("body-input", "")
+  const [bodyInput, setBodyInput] = useState(storageBodyInput)
+
   const debouncedUrlInput = useDebounce(urlInput, { wait: 400 })
   const debouncedBodyInput = useDebounce(bodyInput, { wait: 400 })
+
+  useUpdateEffect(() => {
+    setStorageUrlInput(debouncedUrlInput);
+  }, [debouncedUrlInput])
+
+  useUpdateEffect(() => {
+    setStorageBodyInput(debouncedBodyInput);
+  }, [debouncedBodyInput])
 
   const filteredUrlInfos = useMemo(() => {
     if (!debouncedUrlInput) {

@@ -13,5 +13,8 @@ export const getStyle = () => {
 
 export default () => (
   <div className={"button-wrapper"}>
+    <div className={"img-container"} onClick={() => {
+       chrome.runtime.sendMessage({ openSidebar: true })
+    }}></div>
   </div>
 )
