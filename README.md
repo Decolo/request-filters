@@ -1,3 +1,7 @@
+# Introduction
+This is an chrome extension for showing request detail in side panel in convience.
+
+# How to start
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
 ## Getting Started
